@@ -763,7 +763,7 @@ bool ConditionSet::ParseFromInfix(const DataNode &node, int &tokenNr, int parent
 		// At this point, we can expect one of the following:
 		// - an infix-operator
 		// - a closing bracket (hopefully matching an earlier open bracket)
-		// - an comma (hopefully being part of a function body)
+		// - a comma (hopefully being part of a function body)
 		// - end of the tokens.
 
 		// Reaching the end is fine, since we should have parsed a full terminal before this one.
