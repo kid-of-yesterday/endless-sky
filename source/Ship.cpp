@@ -93,6 +93,13 @@ namespace {
 	// Outfit scanner (15) takes 10 seconds (600/600=1.0) to scan a Bactrian (740 space) at 0 range.
 	const double SCAN_OUTFIT_FACTOR = pow(1.0 / sqrt(15.), -1.5) / 740.;
 
+	// Ships in this category have extended scanner range.
+	const string SCOUT_CATEGORY = "Scout";
+	// Scan range scales with the square root of scan power, so scouts' scan power
+	// is multiplied by the square of the desired range multiplier (1.25x range).
+	const double SCOUT_SCAN_RANGE_MULTIPLIER = 1.25;
+	const double SCOUT_SCAN_POWER_MULTIPLIER = SCOUT_SCAN_RANGE_MULTIPLIER * SCOUT_SCAN_RANGE_MULTIPLIER;
+
 	// Total number of frames the damaged overlay is show, if any.
 	constexpr int TOTAL_DAMAGE_FRAMES = 40;
 
@@ -2545,6 +2552,14 @@ int Ship::Scan(const PlayerInfo &player)
 	if(!outfitSpeed)
 		outfitSpeed = outfitDistanceSquared;
 
+	// Scouts get extended scanner range. This is applied after the default scan
+	// speeds are derived so that the bonus affects range only, not scan speed.
+	if(IsScout())
+	{
+		cargoDistanceSquared *= SCOUT_SCAN_POWER_MULTIPLIER;
+		outfitDistanceSquared *= SCOUT_SCAN_POWER_MULTIPLIER;
+	}
+
 	// Check how close this ship is to the target it is trying to scan.
 	// To normalize 1 "scan power" to reach 100 pixels, divide this square distance by 100^2, or multiply by 0.0001.
 	// Because this uses distance squared, to reach 200 pixels away you need 4 "scan power".
@@ -3926,6 +3941,13 @@ bool Ship::CanCarry(const Ship &ship) const
 bool Ship::CanBeCarried() const
 {
 	return canBeCarried;
+}
+
+
+
+bool Ship::IsScout() const
+{
+	return attributes.Category() == SCOUT_CATEGORY;
 }
 
 
