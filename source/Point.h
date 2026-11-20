@@ -27,7 +27,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 // A Point can represent either a location or a vector (e.g. a velocity, or a
 // distance between two points, or a unit vector representing a direction). All
 // basic mathematical operations that make sense for vectors are supported.
-// Internally the coordinates are stored in a SSE vector and the processor's vector
+// Internally the coordinates are stored in an SSE vector and the processor's vector
 // extensions are used to optimize all operations.
 class Point {
 public:
